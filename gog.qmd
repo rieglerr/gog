@@ -1,0 +1,110 @@
+---
+title: "Using ggplot for graphics"
+format: pdf
+editor: visual
+---
+
+## Plan
+
+-   Introduction to grammar of graphics and ggplot
+-   Why using ggplot and not Excel/Calc?
+-   Basic example of ggplot
+-   Exercise for students
+-   Introduction to themes
+-   apply themes to task what students produced before
+-   Let's do some fancy stuff
+
+## Loading necessary packages and data
+
+The R base package is like a smart phone without any extra apps installed. For example, you can make calls, send messages and even have an exciting ringing tone. While this will be enough for using your smart phone as a "phone", to get most out of it, you will install additional apps, like a music player, VPN, and so on. Similarly, to boost the power of R as a statistical software package, we will install additional packages. One of the most popular packages for example is the `ggplot2` package that allows you to produce professional graphics. We will discuss them in more detail in today's session.
+
+Let's install the following package: `tidyvers`. This package also include the `ggplot2` package and others that will simplify data manipulation.
+
+```{r}
+#| eval: false
+install.packages("tidyverse")
+```
+
+Once it is install, don't forget to activate it!
+
+```{r}
+#| warning: false
+library("tidyverse")
+```
+
+The `ggplot2` package also contains some example datasets. We will use the mpg dataset to introduce ggplot and follow the example by Wickham et al. (2025) <https://ggplot2-book.org>
+
+To get an idea what the data looks like, just type:
+
+```{r}
+mpg
+```
+
+The variables are:
+
+-   `cty` and `hwy` record miles per gallon (mpg) for city and highway driving.
+-   `displ` is the engine displacement in litres.
+-   `drv` is the drivetrain: front wheel (f), rear wheel (r) or four wheel (4).
+-   `model` is the model of car. There are 38 models, selected because they had a new edition every year between 1999 and 2008.
+-   `class` is a categorical variable describing the “type” of car: two seater, SUV, compact, etc.
+
+## Let's get started with ggplot
+
+Using the grammar of graphics concept, we will analysie the relationship between `displ` and `hwy`. Remember the three steps of producing graphs: 1. select the **data** 2. set **aesthetic** properties 3. add **layers** to display the data
+
+We begin with mapping data to aesthetic properties:
+
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy))
+```
+
+The graph is empty! We can see that we have the correct labels on the axes, but we did not add the necessary layer to display the data. We can use geometric object, or *geoms* to do make the command do what we would expect it to do: to show data!
+
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+ geom_point() 
+```
+
+You can add another layer like a regression line to the plot to picture the statistical relationship between the variables:
+
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+ geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+By changing the mapping aesthetics, we can also introduce different colour schemes for different groups in our data. For example, we would like to add a "third" dimension to the graph, by colour-coding the data by car class.
+
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy, colour = class)) +
+ geom_point() 
+```
+
+If you want to save the planet, don't drive an SUV or Pickup truck given that they have the lowest miles per gallon statistics. Using the colour option in the mapping aesthetics, all layers will apply the same grouping options. If we add our `geom_smooth` layer again, we do not have to specify the colouring!
+
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy, colour = class)) +
+ geom_point() +
+  geom_smooth(method = "lm", se= FALSE)
+```
+
+If you would like to add only one overall regression line using the whole data, but keeping the colour-coding, we have to make a small adjustment. We move the mapping aesthetics option `aes(..., colour = class)` into the `geom_point()` layer, so that colouring with respect to car class only applies to the points, and not to `geom_smooth()`.
+
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+ geom_point(aes(colour = class)) +
+  geom_smooth(method = "lm",se = FALSE)
+  
+```
+
+## Faceting
+
+Another popular method for plotting data for different groups is faceting. This means that we split the data into subsets and produce the same plot for each subset of the data. A great example for the usefulness of the method can be found her: <https://www.scientificamerican.com/article/climate-change-drives-escalating-drought/>
+
+Before we can produce such advanced graphs, let's look at the basics first:
+
+```{r}
+ggplot(mpg, aes(displ,hwy)) +
+  geom_point() +
+  facet_wrap(~class)
+```
