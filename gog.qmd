@@ -1,6 +1,6 @@
 ---
 title: "Using ggplot for graphics"
-format: pdf
+format: html
 editor: visual
 ---
 
@@ -37,7 +37,7 @@ The `ggplot2` package also contains some example datasets. We will use the mpg d
 To get an idea what the data looks like, just type:
 
 ```{r}
-mpg
+head(mpg)
 ```
 
 The variables are:
@@ -108,3 +108,59 @@ ggplot(mpg, aes(displ,hwy)) +
   geom_point() +
   facet_wrap(~class)
 ```
+
+## Student Exercises
+
+Import the *region_data.csv* dataset from <https://github.com/rieglerr/gog>. This dataset was sourced from <https://www.ons.gov.uk/> and simplified to only contain aggregated regional data on gross disposable household income per capita for the period 1997 to 2022. Note that the data is measured in GBP at current prices.
+
+Complete the following tasks: 
+
+1. Load the dataset 
+2. Look at the data 
+3. Create a plot using the ggplot command. Add the *year* variable to the x axis, and *GDHI_pc* on the y-axis and the `colour = Region_name` option to the mapping aesthetics to illustrate regional differences. Select a suitable geometric object to display the data. Experiment with different options from this list and select the one you think is most suitable for: 
+
+  - `geom_area` 
+  - `geom_line` 
+  - `geom_point` 
+
+4. Use faceting to create a plot for each region. We do not need a separate legend, we can surpress it by adding the layer `theme(legend.position="none")`.
+6. In what regions did we find the largest increase in gross disposable household income per capita?
+
+## Exercise solutions
+
+### 1
+
+```{r}
+region_data <- read.csv("~/Dropbox/work/gog/data/region_data.csv")
+```
+
+### 2
+```{r}
+head(region_data)
+```
+
+### 3
+```{r}
+ggplot(region_data, aes(x = year, y = GDHI_pc, colour = Region_name)) +
+  geom_point()
+
+ggplot(region_data, aes(x = year, y = GDHI_pc, colour = Region_name)) +
+  geom_line()
+
+ggplot(region_data, aes(x = year, y = GDHI_pc, colour = Region_name)) +
+  geom_area()
+
+```
+`geom_line()` is most suitable for the data.
+
+### 4
+```{r}
+ggplot(region_data, aes(x = year, y = GDHI_pc, colour = Region_name)) +
+  geom_line() +
+  facet_wrap(~Region_name) +
+  theme(legend.position="none")
+```
+
+### 5
+London has experienced the largest increase in GDHI per capita. With the exception of the South East, most regions have a significantly lower disposable income.
+  

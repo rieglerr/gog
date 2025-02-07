@@ -4,7 +4,7 @@ library(tidyverse)
 library(readxl)
 
 # Load data
-region_data <- read_excel("Box/Teaching/2024WS/data_presentation/data/regionalgrossdisposablehouseholdincomeallitlregions20221.xlsx", sheet = "Table 3", col_names = FALSE)
+region_data <- read_excel("data/regionalgrossdisposablehouseholdincomeallitlregions20221.xlsx", sheet = "Table 3", col_names = FALSE)
 
 #Tidy up data!
 
@@ -36,7 +36,3 @@ region_data <- region_data %>%
 write.csv(region_data, "region_data.csv", row.names = FALSE)
 
 
-# GGPLOT testing
-
-ggplot(region_data, aes(x=year, y=GDHI_pc, colour=Region_name)) +
-  geom_point()
