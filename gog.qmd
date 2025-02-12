@@ -1,6 +1,6 @@
 ---
 title: "Using ggplot for graphics"
-format: html
+format: pdf
 editor: visual
 ---
 
@@ -13,6 +13,12 @@ editor: visual
 -   Introduction to themes
 -   apply themes to task what students produced before
 -   Let's do some fancy stuff
+
+## Grammar of Graphics
+
+Most of us are familar with producing plots with spreadsheet software such as Microsoft Office or Libre Office. We usually try to plot one or two dimensional data (e.g. plotting a series of share prices, or the relationship between income and education), and then select one of the graphs provided by the software package. While this approach is very straight forward, it (i) diminishes the creativity of the users, (ii) struggles with plotting data that has more than 2 dimensions and (iii) can be very time consuming to replicate or modify the plot. Luckily, Leland Wilkinson(XXX) introduced the idea of the Grammar of Graphis to the world. I took several years until Hadley Wickham's operationalised a variant of the GoG in his ggplot2 R package.
+
+
 
 ## Loading necessary packages and data
 
@@ -163,4 +169,43 @@ ggplot(region_data, aes(x = year, y = GDHI_pc, colour = Region_name)) +
 
 ### 5
 London has experienced the largest increase in GDHI per capita. With the exception of the South East, most regions have a significantly lower disposable income.
-  
+
+## Themes
+Using themes can facilitate the generation of professional graphics. Institutions like the BBC have their own themes. That means any BBC journalist can produce charts that follow the official BBC guidelines easily!
+
+The BBC plot package is not part of the standard R repository, but can be easily downloaded from the BBC github account.
+
+```{r}
+#| echo: FALSE
+#| eval: FALSE
+library(remotes) # package needed to allow us installing packages from github
+install_github("bbc/bbplot")
+```
+```{r}
+library(bbplot) # activate bbc style theme
+```
+
+```{r}
+region_data_sel <- read.csv("~/Dropbox/work/gog/data/region_data_sel.csv")
+```
+
+```{r}
+ggplot(region_data_sel, aes(x = year, y = GDHI_pc, colour = Region_name)) +
+  geom_line() 
+
+ggplot(region_data_sel, aes(x = year, y = GDHI_pc, colour = Region_name)) +
+  geom_line() +
+  theme_bw()
+
+ggplot(region_data_sel, aes(x = year, y = GDHI_pc, colour = Region_name)) +
+  geom_line() +
+  theme_dark()
+
+ggplot(region_data_sel, aes(x = year, y = GDHI_pc, colour = Region_name)) +
+  geom_line() +
+  theme_linedraw()
+
+ggplot(region_data_sel, aes(x = year, y = GDHI_pc, colour = Region_name)) +
+  geom_line() +
+  bbc_style()
+```

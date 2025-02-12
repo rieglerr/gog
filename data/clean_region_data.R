@@ -35,4 +35,9 @@ region_data <- region_data %>%
 ## save as csv file
 write.csv(region_data, "region_data.csv", row.names = FALSE)
 
+# Produce a smaller dataset with only London, East Midlands and West Midlands
+region_data_sel <- region_data %>%
+  filter(Region_name %in% c("London" , "West Midlands", "East Midlands"))
+
+write.csv(region_data_sel, "data/region_data_sel.csv", row.names = FALSE)
 
