@@ -16,9 +16,27 @@ editor: visual
 
 ## Grammar of Graphics
 
-Most of us are familar with producing plots with spreadsheet software such as Microsoft Office or Libre Office. We usually try to plot one or two dimensional data (e.g. plotting a series of share prices, or the relationship between income and education), and then select one of the graphs provided by the software package. While this approach is very straight forward, it (i) diminishes the creativity of the users, (ii) struggles with plotting data that has more than 2 dimensions and (iii) can be very time consuming to replicate or modify the plot. Luckily, Leland Wilkinson(XXX) introduced the idea of the Grammar of Graphis to the world. I took several years until Hadley Wickham's operationalised a variant of the GoG in his ggplot2 R package.
+Most of us are familar with producing plots with spreadsheet software such as Microsoft Office or Libre Office. We usually try to plot one or two dimensional data (e.g. plotting a series of share prices, or the relationship between income and education), and then select one of the graphs provided by the software package. While this approach is very straight forward, it (i) diminishes the creativity of the users, (ii) struggles with plotting data that has more than 2 dimensions and (iii) can be very time consuming to replicate or modify the plot. Luckily, Leland Wilkinson (XXX) introduced the idea of the Grammar of Graphis to the world. I took several years until Hadley Wickham's operationalised a variant of the GoG in his ggplot2 R package.
 
+What is the grammar of graphics? According to Wilkinson himself it is:
 
+"The grammar of graphics (GoG) denotes a system with seven classes embedded in
+a data flow. This data flow specifies a strict order in which data are
+transformed from a raw dataset to a statistical graphic. Each class contains multiple methods,
+each of which is a function executed at the step in the data flow corresponding to
+that class. The classes are orthogonal, in the sense that the product set of all classes
+(every possible sequence of class methods) defines a space of graphics which is
+meaningful at every point. The meaning of a statistical graphic is thus determined
+by the mapping produced by the function chain linking data and graphic."
+
+What does it mean? 
+
+- GoG is a structured approach of turning data into visualizations by following a specific set of steps. 
+- Each step plays a unique role, like preparing the data, choosing how to display it, and adjusting its appearance. 
+- Using these steps, we can create a wide variety of meaningful charts and graphs.
+
+Wickham (2008) operationalised this idea by writing the ggplot2 package that
+is based on this layered approach, and we are going to use the package today!
 
 ## Loading necessary packages and data
 
@@ -119,18 +137,18 @@ ggplot(mpg, aes(displ,hwy)) +
 
 Import the *region_data.csv* dataset from <https://github.com/rieglerr/gog>. This dataset was sourced from <https://www.ons.gov.uk/> and simplified to only contain aggregated regional data on gross disposable household income per capita for the period 1997 to 2022. Note that the data is measured in GBP at current prices.
 
-Complete the following tasks: 
+Complete the following tasks:
 
-1. Load the dataset 
-2. Look at the data 
-3. Create a plot using the ggplot command. Add the *year* variable to the x axis, and *GDHI_pc* on the y-axis and the `colour = Region_name` option to the mapping aesthetics to illustrate regional differences. Select a suitable geometric object to display the data. Experiment with different options from this list and select the one you think is most suitable for: 
+1.  Load the dataset
+2.  Look at the data
+3.  Create a plot using the ggplot command. Add the *year* variable to the x axis, and *GDHI_pc* on the y-axis and the `colour = Region_name` option to the mapping aesthetics to illustrate regional differences. Select a suitable geometric object to display the data. Experiment with different options from this list and select the one you think is most suitable for:
 
-  - `geom_area` 
-  - `geom_line` 
-  - `geom_point` 
+-   `geom_area`
+-   `geom_line`
+-   `geom_point`
 
-4. Use faceting to create a plot for each region. We do not need a separate legend, we can surpress it by adding the layer `theme(legend.position="none")`.
-6. In what regions did we find the largest increase in gross disposable household income per capita?
+4.  Use faceting to create a plot for each region. We do not need a separate legend, we can surpress it by adding the layer `theme(legend.position="none")`.
+5.  In what regions did we find the largest increase in gross disposable household income per capita?
 
 ## Exercise solutions
 
@@ -141,11 +159,13 @@ region_data <- read.csv("~/Dropbox/work/gog/data/region_data.csv")
 ```
 
 ### 2
+
 ```{r}
 head(region_data)
 ```
 
 ### 3
+
 ```{r}
 ggplot(region_data, aes(x = year, y = GDHI_pc, colour = Region_name)) +
   geom_point()
@@ -157,9 +177,11 @@ ggplot(region_data, aes(x = year, y = GDHI_pc, colour = Region_name)) +
   geom_area()
 
 ```
+
 `geom_line()` is most suitable for the data.
 
 ### 4
+
 ```{r}
 ggplot(region_data, aes(x = year, y = GDHI_pc, colour = Region_name)) +
   geom_line() +
@@ -168,9 +190,11 @@ ggplot(region_data, aes(x = year, y = GDHI_pc, colour = Region_name)) +
 ```
 
 ### 5
+
 London has experienced the largest increase in GDHI per capita. With the exception of the South East, most regions have a significantly lower disposable income.
 
 ## Themes
+
 Using themes can facilitate the generation of professional graphics. Institutions like the BBC have their own themes. That means any BBC journalist can produce charts that follow the official BBC guidelines easily!
 
 The BBC plot package is not part of the standard R repository, but can be easily downloaded from the BBC github account.
@@ -181,6 +205,7 @@ The BBC plot package is not part of the standard R repository, but can be easily
 library(remotes) # package needed to allow us installing packages from github
 install_github("bbc/bbplot")
 ```
+
 ```{r}
 library(bbplot) # activate bbc style theme
 ```
@@ -209,3 +234,15 @@ ggplot(region_data_sel, aes(x = year, y = GDHI_pc, colour = Region_name)) +
   geom_line() +
   bbc_style()
 ```
+
+
+## The final touches
+What about further annotations as the final touches for your plots? When you create graphs you have to think like an economist, i.e. what are the opportunity costs of your actions. Visually,
+you can do nearly anything you like with R's ggplot2 package, however, you
+will reach a point where some small annotations may be too time consuming. These could be swiftly done with other graphics packages like GIMP, Adobe Illustrator or even MS Paint. 
+
+As Keyes (2024) states: "Get yourself 90 percent of the way there with ggplot
+and then use Illustrator, Figma, or a similar tool to finish your work." Get
+the aesthetics, layers and a suitable theme so that you can easily replicate
+your work our use it as a template for updated data you are using. If you add
+annotations, that are very case specific, i.e. cannot be used again for other variants of your plot, then consider using an external programme.  
