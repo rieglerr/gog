@@ -35,7 +35,13 @@ What does it mean? In a nutshell:
 - Each step plays a unique role, like preparing the data, choosing how to display it, and adjusting its appearance. 
 - Using these steps, we can create a wide variety of meaningful charts and graphs.
 
-Wickham (2008) operationalised this idea by writing the ggplot2 package that is based on this layered approach, and we are going to use the package today! The ggplot packages follows a layered approach, 
+Wickham (2008) operationalised this idea by writing the ggplot2 package that is based on this layered approach, and we are going to use the package today! Using it is similar to building a house:
+
+- **Foundation**: We select a dataset that we want to use for plotting. We decide what variable we put on the axes, and set some global *aesthetics* options that will apply for all the layers we use.
+
+- **Building the house**: To actually produce the chart, we have to add geometrics opjects (geoms). E.g. this could be bars, lines, points, etc. We could add another data layer to the graph with its own aesthetics, which is similar to building a conservatory to your house. 
+
+- **Decorating**: To make sure that the graph looks perfect, we can modify the scales, lables and legend of the graph. We can also apply themes and facetting.
 
 ## Loading necessary packages and data
 
