@@ -20,28 +20,21 @@ Most of us are familar with producing plots with spreadsheet software such as Mi
 
 What is the grammar of graphics? Let us have Wilkinson explain it to us:
 
-"The grammar of graphics (GoG) denotes a system with seven classes embedded in
-a data flow. This data flow specifies a strict order in which data are
-transformed from a raw dataset to a statistical graphic. Each class contains multiple methods,
-each of which is a function executed at the step in the data flow corresponding to
-that class. The classes are orthogonal, in the sense that the product set of all classes
-(every possible sequence of class methods) defines a space of graphics which is
-meaningful at every point. The meaning of a statistical graphic is thus determined
-by the mapping produced by the function chain linking data and graphic." (Wilkinson, xxx)
+"The grammar of graphics (GoG) denotes a system with seven classes embedded in a data flow. This data flow specifies a strict order in which data are transformed from a raw dataset to a statistical graphic. Each class contains multiple methods, each of which is a function executed at the step in the data flow corresponding to that class. The classes are orthogonal, in the sense that the product set of all classes (every possible sequence of class methods) defines a space of graphics which is meaningful at every point. The meaning of a statistical graphic is thus determined by the mapping produced by the function chain linking data and graphic." (Wilkinson, xxx)
 
 What does it mean? In a nutshell:
 
-- GoG is a structured approach of turning data into visualizations by following a specific set of steps. 
-- Each step plays a unique role, like preparing the data, choosing how to display it, and adjusting its appearance. 
-- Using these steps, we can create a wide variety of meaningful charts and graphs.
+-   GoG is a structured approach of turning data into visualizations by following a specific set of steps.
+-   Each step plays a unique role, like preparing the data, choosing how to display it, and adjusting its appearance.
+-   Using these steps, we can create a wide variety of meaningful charts and graphs.
 
 Wickham (2008) operationalised this idea by writing the ggplot2 package that is based on this layered approach, and we are going to use the package today! Using it is similar to building a house:
 
-- **Foundation**: We select a dataset that we want to use for plotting. We decide what variable we put on the axes, and set some global *aesthetics* options that will apply for all the layers we use.
+-   **Foundation**: We select a dataset that we want to use for plotting. We decide what variable we put on the axes, and set some global *aesthetics* options that will apply for all the layers we use.
 
-- **Building the house**: To actually produce the chart, we have to add geometrics opjects (geoms). E.g. this could be bars, lines, points, etc. We could add another data layer to the graph with its own aesthetics, which is similar to building a conservatory to your house. 
+-   **Building the house**: To actually produce the chart, we have to add geometrics opjects (geoms). E.g. this could be bars, lines, points, etc. We could add another data layer to the graph with its own aesthetics, which is similar to building a conservatory to your house.
 
-- **Decorating**: To make sure that the graph looks perfect, we can modify the scales, lables and legend of the graph. We can also apply themes and facetting.
+-   **Decorating**: To make sure that the graph looks perfect, we can modify the scales, lables and legend of the graph. We can also apply themes and facetting.
 
 ## Loading necessary packages and data
 
@@ -160,7 +153,7 @@ Complete the following tasks:
 ### 1
 
 ```{r}
-region_data <- read.csv("~/Dropbox/work/gog/data/region_data.csv")
+region_data <- read.csv("data/region_data.csv")
 ```
 
 ### 2
@@ -216,7 +209,7 @@ library(bbplot) # activate bbc style theme
 ```
 
 ```{r}
-region_data_sel <- read.csv("~/Dropbox/work/gog/data/region_data_sel.csv")
+region_data_sel <- read.csv("data/region_data_sel.csv")
 ```
 
 ```{r}
@@ -240,18 +233,11 @@ ggplot(region_data_sel, aes(x = year, y = GDHI_pc, colour = Region_name)) +
   bbc_style()
 ```
 
-
 ## The final touches
-What about further annotations as the final touches for your plots? When you create graphs you have to think like an economist, i.e. what are the opportunity costs of your actions. Visually,
-you can do nearly anything you like with R's ggplot2 package, however, you
-will reach a point where some small annotations may be too time consuming. These could be swiftly done with other graphics packages like GIMP, Adobe Illustrator or even MS Paint. 
 
-As Keyes (2024) states: "Get yourself 90 percent of the way there with ggplot
-and then use Illustrator, Figma, or a similar tool to finish your work." Get
-the aesthetics, layers and a suitable theme so that you can easily replicate
-your work our use it as a template for updated data you are using. If you add
-annotations, that are very case specific, i.e. cannot be used again for other variants of your plot, then consider using an external programme.  
+What about further annotations as the final touches for your plots? When you create graphs you have to think like an economist, i.e. what are the opportunity costs of your actions. Visually, you can do nearly anything you like with R's ggplot2 package, however, you will reach a point where some small annotations may be too time consuming. These could be swiftly done with other graphics packages like GIMP, Adobe Illustrator or even MS Paint.
 
+As Keyes (2024) states: "Get yourself 90 percent of the way there with ggplot and then use Illustrator, Figma, or a similar tool to finish your work." Get the aesthetics, layers and a suitable theme so that you can easily replicate your work our use it as a template for updated data you are using. If you add annotations, that are very case specific, i.e. cannot be used again for other variants of your plot, then consider using an external programme.
 
 ## Bubble charts
 
@@ -260,7 +246,7 @@ We are following now the example from <https://data.europa.eu/apps/data-visualis
 Let's load the data:
 
 ```{r}
-bubble.chart.data <- read.csv("~/Dropbox/work/gog/data/bubble.chart.data.csv")
+bubble.chart.data <- read.csv("data/bubble.chart.data.csv")
 ```
 
 Now let's create a two dimensional graph to plot the relationship between income (measured as GDP per capita in current US Dollars) and life expectancy in years. The data is from 2022.
@@ -270,8 +256,7 @@ ggplot(data = bubble.chart.data, aes(x = income, y = lifeexp)) +
   geom_point()
 ```
 
-To find some interesting patterns, we want to add the dimensions of population size and continent to the graph. To do this, we use again the `colour = continent` aes option. We also want that the size of the "points" we have added to depend on the population size. This is achieved by adding also `size = population` aes option. 
-
+To find some interesting patterns, we want to add the dimensions of population size and continent to the graph. To do this, we use again the `colour = continent` aes option. We also want that the size of the "points" we have added to depend on the population size. This is achieved by adding also `size = population` aes option.
 
 ```{r}
 ggplot(data = bubble.chart.data, aes(x = income, y = lifeexp, size = population, colour = continent)) +
@@ -285,6 +270,7 @@ ggplot(data = bubble.chart.data, aes(x = income, y = lifeexp, size = population,
   geom_point() +
   scale_x_log10()
 ```
+
 At the moment, the size of each point is just allocated to an ordinal scale, which only tells us which countries are large and which countries are small. We would like to change this, so that the point size actually represents the population size. We want the size to be a continuous scale. However, we set a maximum size so that we do not lose clarity.
 
 ```{r}
@@ -309,6 +295,7 @@ ggplot(data = bubble.chart.data, mapping = aes(
     name = "Population (millions)",
     breaks = c(10, 100, 500, 1000))
 ```
+
 Ok, now we are happy with the scaling (I hope!!!). Let's continue with improving the styling of the chart. At the moment, it is difficult to differentiate all our observations. E.g. any small green point will be eaten up by the large green points! We will change therefore the style of our geometric objects. We will use shape 21 for adding a full circle around the points. See <https://ggplot2.tidyverse.org/articles/ggplot2-specs.html#sec:shape-spec> for different shape values. You will have realised that we changed one of the aes options: instead of colour, we used fill = continent. The reason is that we do not want the circle shape to be a colour specific to a continent, but the fill within the circle. If you stick to the colour option, you will see that we only have a colourful circle without a filling!
 
 ```{r}
@@ -324,7 +311,6 @@ ggplot(data = bubble.chart.data, mapping = aes(
     name = "Population (millions)",
     breaks = c(10, 100, 500, 1000))
 ```
-
 
 Not satisfied with the colours? We can set them manually (or use specific colour themes). We will set them manually first.
 
@@ -387,7 +373,6 @@ ggplot(data = bubble.chart.data, mapping = aes(
         legend.position = "top")
 ```
 
-
 Finally, let's improve the axes lables and add a title, and we are done!
 
 ```{r}
@@ -412,7 +397,6 @@ ggplot(data = bubble.chart.data, mapping = aes(
        y ="Life expectancy (years)") +
   ggtitle("Strong correlation between economic development and life expectancy")
 ```
-
 
 ## Animation
 
